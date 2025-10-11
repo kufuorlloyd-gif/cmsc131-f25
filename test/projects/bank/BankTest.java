@@ -14,14 +14,24 @@ private Bank bank;
     @BeforeEach
     public void setUp() {
         bank = new Bank(4); // bank can hold up to 4 accounts
-        acc1 = new Account("100", "Alice", 500.00, 
-        AccountType.CHECKING);
-        acc2 = new Account("200", "Bob", 700.00, 
-        AccountType.SAVINGS);
+        // format long lines like this for readability
+        acc1 = new Account(
+            "100",
+            "Alice",
+            500.00,
+            AccountType.CHECKING
+        );
+        acc2 = new Account(
+            "200",
+            "Bob",
+            700.00,
+            AccountType.SAVINGS
+        );
         bank.addAccount(acc1);
         bank.addAccount(acc2);
     }
 
+    // TODO test addAccount success and fail
 
     public void testAccountCount() {
         assertEquals(2, bank.getAccountCount());
