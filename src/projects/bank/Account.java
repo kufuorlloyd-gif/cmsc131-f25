@@ -6,7 +6,7 @@ public class Account {
     private Double accountBalance;
     private AccountType accountType;
     public Account (String accountId, String accountOwner, Double accountBalance, AccountType accountType) {
-
+        // TODO data validation
         this.accountId = accountId;
         this.accountOwner = accountOwner;
         this.accountBalance = accountBalance;
