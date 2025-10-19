@@ -104,5 +104,13 @@ public class BankTest {
         );
     }
 
+    // TODO add test coverage for 
+    // loadAccounts failure mode
+    // loadAccounts preserves data
+    // loadAccounts returns true on succeed
+    // writeAccounts failure mode
+    // writeAccounts preserves data
+    // writeAccounts returns true on succeed
+
 } // end: class BankTest
 

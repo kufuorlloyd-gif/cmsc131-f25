@@ -70,27 +70,33 @@ public class Bank {
         return idxNextAccount;
     }
 
+    // TODO javadoc
+    // TODO return boolean indicating success or failure
+    // TODO use try-catch blocks to avoid throwing an exception, like saveAccounts
     public void loadAccounts(String fileName) throws FileNotFoundException{ 
         File inputFile = new File(fileName);
         Scanner scanner = new Scanner(inputFile);
-
         while (scanner.hasNextLine()){
             String line = scanner.nextLine();
             Account account = Account.makeAccount(line);
             add(account);
         }
+        scanner.close(); // file io tools need to be closed
     }
 
-    public boolean saveAccounts(String fileName) throws IOException{
+    // TODO javadoc
+    public boolean saveAccounts(String fileName){
         File outputFile = new File(fileName);
-        FileWriter writer = null;
+        FileWriter writer;
         boolean result; 
-        try {
+        try { // TODO use this approach for loadAccounts
             writer = new FileWriter(outputFile);
 
             for (int i = 0; i < accounts.length; i++ ){
                 if (accounts [i] != null){
                     writer.write (accounts [i].toCSV() + "\n");
+                    // "\n" is ok because your dev container runs linux
+                    // consider using System.lineSeparator() which is os-agnostic
                 }
             }
 
@@ -99,10 +105,8 @@ public class Bank {
         
         } catch (IOException e) {
             e.printStackTrace();
-             result = false;
+            result = false; // yes!
          }
             return result;
-             
-
         }
     }

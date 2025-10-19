@@ -48,10 +48,19 @@ public class Account {
     public double getBalance() {return balance; }
     public AccountType getType() { return type; }
     
-    public static Account makeAccount(String input_line) {
-        String[] words = input_line.split(",");
-        return new Account(words[1], words[2], Double.parseDouble(words[3]),AccountType.valueOf(words[0]));
+    // TODO javadoc, include description of line to be parsed
+    public static Account makeAccount(String inputLine) {
+        // TODO validate inputLine
+        String[] words = inputLine.split(",");
+        String ownerName = words[2];
+        return new Account( // this is efficient code but potentially risky
+            words[1], // you should explicitly say what each word represents
+            ownerName, // like this
+            Double.parseDouble(words[3]),
+            AccountType.valueOf(words[0]) // TODO make uppercase
+        );
     }
+
     public String toCSV() {
         return getType() + "," + getID() + "," + getOwnerName() + "," + getBalance();
     }
