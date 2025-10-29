@@ -1,10 +1,13 @@
 package projects.bank;
+
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.FileNotFoundException;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
-public class Bank {
+
+public class Bank implements AccountAccess{
 
     private Account[] accounts;
     private int idxNextAccount;
@@ -65,44 +68,120 @@ public class Bank {
 
     /**
      * @return - Number of accounts in this Bank.
-     */
+     */ 
     public int getCount() {
         return idxNextAccount;
     }
 
-    public void loadAccounts(String fileName) throws FileNotFoundException{ 
-        File inputFile = new File(fileName);
-        Scanner scanner = new Scanner(inputFile);
-
-        while (scanner.hasNextLine()){
-            String line = scanner.nextLine();
-            Account account = Account.makeAccount(line);
-            add(account);
-        }
-    }
-
-    public boolean saveAccounts(String fileName) throws IOException{
-        File outputFile = new File(fileName);
-        FileWriter writer = null;
-        boolean result; 
+    /**
+     * Load accounts into this Bank from a CSV file. 
+     * 
+     * Assumes each row follows the format savings,wz240833,Anna Gomez,8111.00
+     * @param filename - Name of source CSV file.
+     * @return - {@code true} if and only if the operation is successful
+     */
+    public boolean loadAccounts(String filename) {
+        boolean result = true;
+        File inputFile = new File(filename);
+        Scanner scan;
         try {
-            writer = new FileWriter(outputFile);
-
-            for (int i = 0; i < accounts.length; i++ ){
-                if (accounts [i] != null){
-                    writer.write (accounts [i].toCSV() + "\n");
-                }
+            scan = new Scanner(inputFile);
+            while (scan.hasNextLine()) {
+                String csvString = scan.nextLine();
+                Account account = Account.make(csvString);
+                add(account);
             }
-
-            writer.close();
-            result = true;
-        
-        } catch (IOException e) {
+            scan.close();
+        } catch(FileNotFoundException e) {
             e.printStackTrace();
-             result = false;
-         }
-            return result;
-             
+            result = false;
+        }
+        return result;
+    }
 
+    /**
+     * Write accounts in this Bank to CSV file.
+     * @param filename - Name of destination CSV file.
+     */
+    public boolean writeAccounts(String filename) {
+        File file = new File(filename);
+        FileWriter writer;
+        try {
+            writer = new FileWriter(file);
+            for (int idx = 0; idx < idxNextAccount; idx++) {
+                Account account = accounts[idx];
+                String accountCsv = account.toCSV();
+                writer.write(accountCsv + System.lineSeparator());
+            }
+            writer.close();
+            return true;
+        } catch(IOException e) {
+            e.printStackTrace();
+            return false;
         }
     }
+
+    public Transaction[] loadTransactions(String filename){
+        Transaction[] transactions = null;
+        File inputFile = new File(filename);
+        try {
+            int count = 0;
+            Scanner counter = new Scanner(inputFile);
+            while (counter.hasNextLine()) {
+                count++;
+            }
+            counter.close();
+
+            if (count == 0) {
+                return transactions;
+            }
+            
+            transactions = new Transaction[count];
+
+            int idx = 0;
+            Scanner scan = new Scanner(inputFile);
+            while (scan.hasNextLine()) {
+
+                String line = scan.nextLine();
+                transactions[idx] = Transaction.make(line);
+                idx++;
+            } //change line 144 - 154. replaces lines 144-152 by a single line that has Transaction.make(line)
+            scan.close();
+
+
+
+        }
+        catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return transactions;
+        }
+
+        return transactions;
+    }
+        
+    public void processTransactions(Transaction[] trs) {
+        for (Transaction t : trs){
+            if (t != null){
+            t.execute(this);
+            }
+        }
+    } 
+    
+
+    @Override
+    public Account findAccount(String Id) {
+            int idx = find(Id);
+        if (idx >= 0) {
+            return accounts[idx];
+        }
+        return null;
+    
+        
+    }
+//    make scanner object similar to line 87 for transactions. do transactions.make
+// and instead of the "add (account), do the processTransactions step. "
+    
+            //write logic that makes the processing happen and validate the execute methods for transactions. 
+
+
+}

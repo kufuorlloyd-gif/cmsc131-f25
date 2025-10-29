@@ -1,11 +1,10 @@
 package projects.bank;
 
-public class Account {
+public abstract class Account {
 
     private final String id;
     private final String ownerName;
     private double balance;
-    private final AccountType type;
 
     /**
      * 
@@ -19,8 +18,7 @@ public class Account {
     public Account(
         String id,
         String ownerName,
-        double balance,
-        AccountType type
+        Double balance
     ) {
         if (id != null) {
             this.id = id;
@@ -33,12 +31,6 @@ public class Account {
         } else {
             throw new IllegalArgumentException("ownerName cannot be null");
         }
-
-        if (type != null) {
-            this.type = type;
-        } else {
-            throw new IllegalArgumentException("type cannot be null");
-        }
         
         this.balance = balance;
     }
@@ -46,14 +38,42 @@ public class Account {
     public String getID() { return id; }
     public String getOwnerName() { return ownerName; }
     public double getBalance() {return balance; }
-    public AccountType getType() { return type; }
-    
-    public static Account makeAccount(String input_line) {
-        String[] words = input_line.split(",");
-        return new Account(words[1], words[2], Double.parseDouble(words[3]),AccountType.valueOf(words[0]));
+
+
+
+    /**
+     * CSV line holding this account's data.
+     * @return Eg, "savings,wz240833,Anna Gomez,8111.00"
+     */
+    public String toCSV() { return toString(); }
+
+    public void credit (double amount){
+        balance += amount;
+
     }
-    public String toCSV() {
-        return getType() + "," + getID() + "," + getOwnerName() + "," + getBalance();
+    public void debit (double amount){
+        balance -= amount;
+
     }
-    
+    public boolean hasFunds(double amount) {
+        return balance >= amount;
+
+    }
+     public static Account make(String inputLine) {
+        if (inputLine == null) {
+            throw new IllegalArgumentException("inputLine cannot be null");
+        }
+        String[] tokens = inputLine.split(",");
+        // throws on invalid type
+        AccountType type = AccountType.valueOf(tokens[0].toUpperCase());
+        String id = tokens[1];
+        String ownerName = tokens[2];
+        double balance = (double) Double.valueOf(tokens[3]);
+        if (type == AccountType.CHECKING) {
+            return new CheckingAccount(id, ownerName, balance);
+        } else {
+            return new SavingsAccount(id, ownerName, balance);
+        }
+    }
+
 }
