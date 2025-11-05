@@ -7,12 +7,16 @@ public class Deposit extends Transaction {
     }
 
     @Override
-    public void execute(AccountAccess accounts) {
+    public void execute(AccountAccess accounts, Audit audit) {
         Account destAcc = accounts.findAccount(getAccountId());
-        if (destAcc != null){
-            destAcc.credit(getAmount());
+        if (destAcc == null){
+            audit.writeError("[Transaction - Deposit] could not find account " + getAccountId());
+            return;
         }
-        
+
+        destAcc.credit(getAmount());
+        audit.writeInfo("[Transaction - Deposit] credited " + getAmount() + " to " + destAcc.getID());
+
     }
 
 }

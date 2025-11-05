@@ -8,13 +8,14 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class Bank implements AccountAccess{
-
+private Audit audit;
     private Account[] accounts;
     private int idxNextAccount;
     private final int newAccountsIncrement = 100;
 
     public Bank() {
         accounts = new Account[newAccountsIncrement];
+        audit = new Audit();
     }
 
     /**
@@ -25,7 +26,8 @@ public class Bank implements AccountAccess{
      */
     public boolean add(Account acct) {
         if (acct == null) {
-            throw new IllegalArgumentException("account must not be null.");
+            audit.writeError("[Bank - addAccount] account must not be null.");
+            // throw new IllegalArgumentException("account must not be null.");
         }
         if (find(acct.getID()) == -1) {
             try {
@@ -56,7 +58,8 @@ public class Bank implements AccountAccess{
      */
     public int find(String accountID) {
         if (accountID == null) {
-            throw new IllegalArgumentException("accountID must not be null.");
+            audit.writeError("[Bank - findAccount] accountID must not be null.");
+            //throw new IllegalArgumentException("accountID must not be null.");
         }
         for (int idxAcct = 0; idxAcct < idxNextAccount; idxAcct++) {
             if (accounts[idxAcct].getID().equals(accountID)) {
@@ -93,7 +96,8 @@ public class Bank implements AccountAccess{
             }
             scan.close();
         } catch(FileNotFoundException e) {
-            e.printStackTrace();
+            audit.writeError("[BANK - loadAccount] could not find file " + filename);
+            //e.printStackTrace();
             result = false;
         }
         return result;
@@ -116,7 +120,8 @@ public class Bank implements AccountAccess{
             writer.close();
             return true;
         } catch(IOException e) {
-            e.printStackTrace();
+            audit.writeError("[Bank - writeAccount] can not create file" + filename);
+            //e.printStackTrace();
             return false;
         }
     }
@@ -152,7 +157,8 @@ public class Bank implements AccountAccess{
 
         }
         catch (FileNotFoundException e) {
-            e.printStackTrace();
+            audit.writeError("[Bank - loadTransaction] could not find file" + filename);
+            //e.printStackTrace();
             return transactions;
         }
 
@@ -162,7 +168,7 @@ public class Bank implements AccountAccess{
     public void processTransactions(Transaction[] trs) {
         for (Transaction t : trs){
             if (t != null){
-            t.execute(this);
+            t.execute(this, audit);
             }
         }
     } 

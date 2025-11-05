@@ -25,7 +25,7 @@ public class AccountTest {
             IllegalArgumentException.class,
             () -> {new Account("id", "Owner Name", 0.0, null);}
         );
-        assertEquals("type cannot be null", e.getMessage());
+        assertEquals("type cannot be null UH OH", e.getMessage());
     }
 
     // TODO add tests for 

@@ -16,7 +16,7 @@ public abstract class Transaction {
     protected double getAmount(){
         return amount;
     }
-    public abstract void execute(AccountAccess accounts);
+    public abstract void execute(AccountAccess accounts, Audit audit);
 
     public static Transaction make(String csv) {
         String[] tokens = csv.split(",");
