@@ -10,22 +10,20 @@ public class AccountTest {
     void testDataValidation() {
         Exception e = assertThrows(
             IllegalArgumentException.class,
-            () -> {new Account(null, "name", 0.0, AccountType.CHECKING);}
+            () -> {
+                // must instantiate subclass because Account is now abstract
+                new CheckingAccount(null, "name", 0.0);
+            }
         );
         assertEquals("id cannot be null", e.getMessage());
 
         e = assertThrows(
             IllegalArgumentException.class,
             () -> {
-                new Account("id", null, 0.0, AccountType.CHECKING);}
+                new CheckingAccount("id", null, 0.0);}
         );
         assertEquals("ownerName cannot be null", e.getMessage());
 
-        e = assertThrows(
-            IllegalArgumentException.class,
-            () -> {new Account("id", "Owner Name", 0.0, null);}
-        );
-        assertEquals("type cannot be null UH OH", e.getMessage());
     }
 
     // TODO add tests for 

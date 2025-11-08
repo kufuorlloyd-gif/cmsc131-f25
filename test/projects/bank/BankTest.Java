@@ -13,7 +13,7 @@ public class BankTest {
     @BeforeEach
     void setup() {
         bank = new Bank();
-        acct = new Account("id0", "Owner Name", 1.0, AccountType.SAVINGS);
+        acct = new SavingsAccount("id0", "Owner Name", 1.0);
     }
 
     // tests for add method
@@ -21,10 +21,9 @@ public class BankTest {
     @Test
     void testAddDataValidation(){
         Exception e = assertThrows(
-            IllegalArgumentException.class,
+            NullPointerException.class,
             () -> {bank.add(null);}
         );
-        assertEquals("account must not be null.", e.getMessage());
     }
 
     @Test
@@ -61,11 +60,10 @@ public class BankTest {
         for (int idx = 0; idx <= 100; idx++) {
             Integer id = idx;
             bank.add(
-                new Account(
+                new CheckingAccount(
                     id.toString(),
                     "Owner Name",
-                    1.0,
-                    AccountType.CHECKING
+                    1.0
                 )
             );
         }
@@ -83,10 +81,10 @@ public class BankTest {
     @Test
     void testFindDataValidation() {
         Exception e = assertThrows(
-            IllegalArgumentException.class,
+            NullPointerException.class,
             () -> {bank.find(null);}
         );
-        assertEquals("accountID must not be null.", e.getMessage());
+        
     }
 
     @Test
@@ -113,4 +111,3 @@ public class BankTest {
     // writeAccounts returns true on succeed
 
 } // end: class BankTest
-

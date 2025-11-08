@@ -1,0 +1,100 @@
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.io.IOException;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+public class TransactionTest {
+
+    private Account account;
+    private Transaction myDeposit, myTransfer, myWithdrawal;
+    private Audit audit;
+
+    @BeforeEach
+    void setUp() {
+        String id = "d437b9";
+        account = new CheckingAccount(
+            id,
+            "Vernon",
+            500.0
+        );
+        myDeposit = new Rental(id);
+        myReturn = new Return(id);
+        try {
+            audit = new Audit("test/audittest.log");
+        } catch (IOException e) { e.printStackTrace(); }
+    }
+
+    // phase 3
+
+    @Test 
+    void testConstructorDataValidation() {
+        Exception e = assertThrows(
+            IllegalArgumentException.class,
+            () -> {new Rental(null);}
+        );
+        assertEquals(
+            "Parameter id cannot be null.",
+            e.getMessage()
+        );
+    }
+
+    @Test
+    void testMakeThrowsOnNullInput() {
+        Exception e = assertThrows(
+            IllegalArgumentException.class,
+            () -> {Transaction.make(null);}
+        );
+        assertEquals(
+            "Parameter inputLine cannot be null.",
+            e.getMessage()
+        );
+    }
+
+    @Test
+    void testMakePreservesData() {
+        String inputLine = "rental,rp332960";
+        Transaction newTrans = Transaction.make(inputLine);
+        assertEquals(
+            "rp332960",
+            newTrans.getItemID()
+        );
+    }
+
+
+    @Test
+    void testValidationAndExecuteCorrectness() {
+        // tool is initialized as available
+        assertEquals( // check rental can execute on tool
+            true, // expected
+            myRent.validate(tool, audit) // actual
+        );
+        assertEquals( // check return cannot execute on tool
+            false,
+            myReturn.validate(tool, audit)
+        );
+
+        myRent.execute(tool, audit); // tool is now rented
+        assertEquals( // check rental cannot execute on tool
+            false,
+            myRent.validate(tool, audit)
+        );
+        assertEquals( // check return can execute on tool
+            true,
+            myReturn.validate(tool, audit)
+        );
+        assertEquals( // check tool is now rented
+            RentalItemState.RENTED,
+            tool.getAvailability()
+        );
+
+        myReturn.execute(tool, audit);
+        assertEquals( // check tool is now available
+            RentalItemState.AVAILABLE,
+            tool.getAvailability(),
+            "Tool has been returned."
+        );
+    }
+
+} // end: class TransactionTest
