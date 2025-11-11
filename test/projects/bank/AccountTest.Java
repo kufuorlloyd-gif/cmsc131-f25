@@ -25,6 +25,22 @@ public class AccountTest {
         assertEquals("ownerName cannot be null", e.getMessage());
 
     }
+    @Test
+    void testGetOwnerName(){
+        Account acc =  new CheckingAccount("id", "Robert", 0.0);
+        assertEquals("Robert", acc.getOwnerName();)
+    }
+    @Test
+    void testGetBalance(){
+        Account acc =  new CheckingAccount("id", "Robert", 110.5);
+        assertEquals(110.5, acc.getBalance();)
+    }
+    @Test
+    void testGetCSV(){
+        Account acc =  new CheckingAccount("tryh", "Robert", 0.0);
+        assertEquals("checking,tryh,Robert,0.0", acc.getCSV();)
+    }
+
 
     // TODO add tests for 
     // static factory throws on null input
