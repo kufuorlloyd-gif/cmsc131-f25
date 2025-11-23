@@ -1,3 +1,8 @@
+/** TODO
+ * 
+ * execute
+ * you should verify that account exists in the bank class, not in here
+ */
 package projects.bank;
 
 public class Withdrawal extends Transaction{

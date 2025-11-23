@@ -28,17 +28,17 @@ public class AccountTest {
     @Test
     void testGetOwnerName(){
         Account acc =  new CheckingAccount("id", "Robert", 0.0);
-        assertEquals("Robert", acc.getOwnerName();)
+        assertEquals("Robert", acc.getOwnerName());
     }
     @Test
     void testGetBalance(){
         Account acc =  new CheckingAccount("id", "Robert", 110.5);
-        assertEquals(110.5, acc.getBalance();)
+        assertEquals(110.5, acc.getBalance());
     }
     @Test
     void testGetCSV(){
         Account acc =  new CheckingAccount("tryh", "Robert", 0.0);
-        assertEquals("checking,tryh,Robert,0.0", acc.getCSV();)
+        assertEquals("checking,tryh,Robert,0.0", acc.toCSV());
     }
 
 

@@ -72,6 +72,26 @@ public class Main {
     }
 
     public static void phase3() {
+        /** dusel
+         * 
+         * running this routine produces an error
+         * 
+         * java.io.FileNotFoundException: Audit/Info.log (No such file or directory)
+        at java.base/java.io.FileOutputStream.open0(Native Method)
+        at java.base/java.io.FileOutputStream.open(FileOutputStream.java:289)
+        at java.base/java.io.FileOutputStream.<init>(FileOutputStream.java:230)
+        at java.base/java.io.FileOutputStream.<init>(FileOutputStream.java:118)
+        at java.base/java.io.FileWriter.<init>(FileWriter.java:67)
+        at projects.bank.Audit.<init>(Audit.java:26)
+        at projects.bank.Bank.<init>(Bank.java:18)
+        at projects.bank.Main.phase3(Main.java:75)
+        at projects.bank.Main.main(Main.java:13)
+Exception in thread "main" java.lang.NullPointerException: Cannot invoke "java.io.FileWriter.write(String)" because "this.error" is null
+        at projects.bank.Audit.writeError(Audit.java:67)
+        at projects.bank.Bank.loadTransactions(Bank.java:160)
+        at projects.bank.Main.phase3(Main.java:77)
+        at projects.bank.Main.main(Main.java:13)
+         */
         Bank bank = new Bank();
         bank.loadAccounts("data/accounts.csv"); // ignore output
         Transaction[] trs = bank.loadTransactions("data/transactions.csv");
