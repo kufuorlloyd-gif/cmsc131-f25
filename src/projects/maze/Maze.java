@@ -20,14 +20,41 @@ import java.io.IOException;
 public class Maze {
 
     private final Grid grid;
+    private Cell start;
 
     public Maze(int maxCells) {
         grid = new Grid(maxCells);
     }
 
     public void discoverAndSetupNeighbors() {
+        Cell[] allCells = grid.getAllCells();
+        for(int i = 0; i < allCells.length; i++){
+            if (allCells[i]==null){
+                continue;
+            }
+            Coords current = allCells[i].getCoords();
+            Coords[]neighbors = {
+                current.getUp(),
+                current.getDown(),
+                current.getLeft(),
+                current.getRight()
+
+            };
+            for (int j = 0; j < neighbors.length;j++){
+                Cell n = grid.getCell(neighbors[j]);
+                allCells[i].addNeighbor(n);
+            }
+            if (allCells[i].getStatus() == CellStatus.S){
+                start = allCells[i];
+            }
+        }
 
     }
+
+    public void Solve(){
+        grid.walk(start);
+        
+    } 
 
     public boolean insertCell(Cell c){
         return grid.insertCell(c);
@@ -76,5 +103,5 @@ public class Maze {
         }
         
     }
-
+   
 }

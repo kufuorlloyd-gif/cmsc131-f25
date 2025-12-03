@@ -19,6 +19,10 @@ public class Grid {
     }
 
     public Cell getCell(Coords vh) {
+        if (!vh.isValid()){
+            return null;
+        }
+
         for (int idx = 0; idx < cellCount; idx++) {
             if ( cells[idx].getCoords().equals(vh) ) {
                return cells[idx];
@@ -38,5 +42,26 @@ public class Grid {
         }
         return allCells;
     }
+    public boolean walk(Cell c){
+        if (c == null || c.isExplored()){
+            return false;
+        }
+        if (c.getStatus() == CellStatus.E){
+            return true;
+        }
+        c.markExplored();
+        Cell []neighbors = c.getNeighbors();
+        for(int i = 0; i < neighbors.length; i++){
+            if (walk (neighbors[i])){
+                c.markPath();
+                return true;
+            }
+
+        }
+        return false;
+    }
+    
+
+
 
 }

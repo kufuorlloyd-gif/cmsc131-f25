@@ -23,14 +23,20 @@ Extra attributes
 A cell will be constructed with a coordinates and a status. Decide for yourself what are sensible default values (if any) for the other attributes.
  */
 
-    private final CellStatus cellStatus;
-
+    private CellStatus cellStatus;
+    private boolean explored;
 
     private final Coords coords;
+    private Cell[]neighbors;
 
     public Cell(Coords c, CellStatus s) {
         coords = c;
         cellStatus = s;
+        neighbors = new Cell[4];
+        explored = false;
+    }
+    public Cell[] getNeighbors(){
+        return neighbors;
     }
 
 
@@ -40,6 +46,32 @@ A cell will be constructed with a coordinates and a status. Decide for yourself 
 
     public CellStatus getStatus(){
         return cellStatus;
+    }
+
+    public boolean isExplored(){
+        return explored;
+    }
+
+    public void markExplored(){
+        explored = true;
+    }
+
+    public void markPath(){
+        if (cellStatus == CellStatus.O){
+            cellStatus = CellStatus.P;
+        }
+
+
+    }
+    public boolean addNeighbor(Cell c){
+        for (int i = 0; i < neighbors.length; i++){
+            if(neighbors[i] == null){
+                neighbors[i] = c;
+                return true;
+            }
+        }
+        return false;
+
     }
 
 }

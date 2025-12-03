@@ -6,3 +6,4 @@ X,O,O,O,X,X,X,X
 X,O,X,O,O,O,X,E
 X,O,X,X,X,X,X,O
 X,O,O,O,O,O,O,O
+X,X,X,X,X,X,X,X
