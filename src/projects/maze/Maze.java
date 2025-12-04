@@ -51,7 +51,7 @@ public class Maze {
 
     }
 
-    public void Solve(){
+    public void solve(){
         grid.walk(start);
         
     } 

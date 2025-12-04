@@ -11,7 +11,7 @@ public class MazeTest {
         Maze maze = MazeReader.load( "data/sample_maze1.txt" );
         //System.out.println("Maze successfully loaded!");
         assertNotNull(maze);
-        maze.Solve();
+        maze.solve();
 
         maze.serialize("data/sample_maze1_out.txt");
     }
@@ -21,7 +21,7 @@ public class MazeTest {
         Maze maze = MazeReader.load( "data/sample_maze2.txt" );
         //System.out.println("Maze successfully loaded!");
         assertNotNull(maze);
-        maze.Solve();
+        maze.solve();
 
         maze.serialize("data/sample_maze2_out.txt");
     }
@@ -31,7 +31,7 @@ public class MazeTest {
         Maze maze = MazeReader.load( "data/sample_maze3.txt" );
         //System.out.println("Maze successfully loaded!");
         assertNotNull(maze);
-        maze.Solve();
+        maze.solve();
 
         maze.serialize("data/sample_maze3_out.txt");
     }
