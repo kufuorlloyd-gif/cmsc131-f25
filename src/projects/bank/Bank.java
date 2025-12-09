@@ -54,12 +54,12 @@ private Audit audit;
      * Find an account in this Bank using its unique ID.
      * @param accountID - Unique ID.
      * @return - Reference to account in this Bank, or -1 if no match.
-     * @throws IllegalArgumentException if accountID is null.
+     * @throws NullPointerException if accountID is null.
      */
     public int find(String accountID) {
         if (accountID == null) {
             audit.writeError("[Bank - findAccount] accountID must not be null.");
-            //throw new IllegalArgumentException("accountID must not be null.");
+            throw new NullPointerException("accountID must not be null.");
         }
         for (int idxAcct = 0; idxAcct < idxNextAccount; idxAcct++) {
             if (accounts[idxAcct].getID().equals(accountID)) {

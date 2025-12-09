@@ -13,34 +13,22 @@ public class Audit {
     private FileWriter warning;
     private FileWriter error;
 
-    public Audit(){
+    public Audit() {
+        this("Info.log", "Warning.log", "Error.log");
+    }
+
+    public Audit(String infoName, String warnName, String errorName){
         try {
-            /** dusel
-             * better to have filenames for info, warning, error 
-             * as inputs to this function
-             */
             // Ensuring Audit folder exist so the FileWriters won't throw
-            File rootPath = new File("/Audit/");
+            File rootPath = new File("data/Audit/");
             rootPath.mkdir();
 
-            info = new FileWriter("Audit/Info.log");
-            warning = new FileWriter("Audit/Warning.log");
-            error = new FileWriter("Audit/Error.log");
+            info = new FileWriter("data/Audit/" + infoName);
+            warning = new FileWriter("data/Audit/" + warnName);
+            error = new FileWriter("data/Audit/" + errorName);
         } catch(IOException e) {
             e.printStackTrace();
-            /** dusel
-             * trying to use a null filewriter in downsteam code
-             * like bank.processTransactions will make your program crash. 
-             * worse, you'll see a NullPointerException, which is not so 
-             * helpful for debugging.
-             * 
-             * instead of this, just have your constructor throw, which will 
-             * (1) prevent your program from running in the first place
-             * (2) give you helpful info about what is wrong
-             */
-            info = null;
-            warning = null;
-            error = null;
+            throw new RuntimeException(e);
         }
     }
     
