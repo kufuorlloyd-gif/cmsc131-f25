@@ -11,6 +11,9 @@ public class Grid {
     }
 
     public boolean insertCell(Cell cell) {
+        if (cell == null) {
+            throw new IllegalArgumentException("Cell cannot be null");
+        }
         if (cellCount < cells.length) {
             cells[cellCount++] = cell;
             return true;
@@ -19,7 +22,10 @@ public class Grid {
     }
 
     public Cell getCell(Coords vh) {
-        if (!vh.isValid()){
+        if (vh == null) {
+            throw new IllegalArgumentException("Coords (vh) cannot be null");
+        }
+        if (!vh.isPositive()){
             return null;
         }
 
@@ -50,9 +56,10 @@ public class Grid {
             return true;
         }
         c.markExplored();
-        Cell []neighbors = c.getNeighbors();
+        Coords []neighbors = c.getNeighbors();
         for(int i = 0; i < neighbors.length; i++){
-            if (walk (neighbors[i])){
+            Cell cell = getCell(neighbors[i]);
+            if (walk (cell)){
                 c.markPath();
                 return true;
             }

@@ -24,25 +24,44 @@ public class Coords {
             && getCol() == other.getCol()
         );
     }
-    public boolean isValid(){
-        return row >= 0 && col >= 0;
 
+
+    public boolean isPositive(){
+        return row >= 0 && col >= 0;
     }
+    /**
+     * "getUp" means to get the coordinate that's above the current coordinate
+     *
+     */
     public Coords getUp(){
         return new Coords(row,col-1);
     }
+/**
+     * "getDown" means to get the coordinate that's below the current coordinate
+     *
+     */
     public Coords getDown(){
         return new Coords(row,col+1);
     }
+    /**
+     * "getLeft" means to get the coordinate that's to the left the current coordinate
+     *
+     */
     public Coords getLeft(){
         return new Coords(row-1,col);
     }
+    /**
+     * "getRight" means to get the coordinate that's to the right the current coordinate
+     *
+     */
     public Coords getRight(){
         return new Coords(row+1,col);
     }
     
     
-
+    public String toString() {
+        return String.format("%d, %d", col, row);
+    }
 }
 
 

@@ -7,11 +7,9 @@ import java.util.Scanner;
 public class MazeReader {
 
     /**
-     * Provided by Dusel. 
-     * Assmes existence of CellStatus enum with values S, O, E.
-     * Assumes existence of discoverAndSetupNeighbors instance method for Maze.
+     * loads a file and creates a maze object based on the grid provided in the file
      * @param filename
-     * @return
+     * @return Maze loaded from the file
      */
     public static Maze load(String filename) {
         Scanner scanner;

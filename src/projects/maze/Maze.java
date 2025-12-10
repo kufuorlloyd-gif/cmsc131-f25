@@ -1,59 +1,73 @@
-/** Maze class specification
 
-- `Maze(int maxCells)` - pre-allocates array to maximum size
-
-- `getStart()` - finds and returns the cell with Status Start
-
-- `getEnd()` - finds and returns the cell with Status End
-    - Consider writing a helper method `getFirstCellWithStatus(Status)` which does linear search
-
-- setupNeighbors() populates the neighbors list of each cell in the grid
-
- */
 
 package projects.maze;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-
+/**
+ * A maze is a group of Cells("spaces") organized in a specific combination to form a 
+ * a certain pathway that leads to the "End" cell.
+ */
 public class Maze {
 
     private final Grid grid;
-    private Cell start;
+    private Coords start;
 
     public Maze(int maxCells) {
         grid = new Grid(maxCells);
     }
 
-    public void discoverAndSetupNeighbors() {
-        Cell[] allCells = grid.getAllCells();
-        for(int i = 0; i < allCells.length; i++){
-            if (allCells[i]==null){
-                continue;
-            }
-            Coords current = allCells[i].getCoords();
-            Coords[]neighbors = {
-                current.getUp(),
-                current.getDown(),
-                current.getLeft(),
-                current.getRight()
+    public Grid getGrid() {
+        return grid;
+    }
 
-            };
-            for (int j = 0; j < neighbors.length;j++){
-                Cell n = grid.getCell(neighbors[j]);
-                allCells[i].addNeighbor(n);
-            }
-            if (allCells[i].getStatus() == CellStatus.S){
-                start = allCells[i];
+    public Coords[] discoverNeighbors(Cell cell) {
+        if (cell == null) {
+            throw new IllegalArgumentException(
+                "Parameter status cannot be null"
+            );
+        }
+
+        Coords coords = cell.getCoords();
+        Coords[] possibleNeighbors = {
+            coords.getUp(),
+            coords.getDown(),
+            coords.getLeft(),
+            coords.getRight()
+        };
+
+        int numNeighbors = 0;
+        Coords[] neighbors = new Coords[possibleNeighbors.length];
+        for (Coords offset : possibleNeighbors) {
+            if (grid.getCell(offset) != null) {
+                neighbors[numNeighbors++] = offset;
             }
         }
 
+        Coords[] validNeighbors = new Coords[numNeighbors];
+        for (int i = 0; i < numNeighbors; i++) {
+            validNeighbors[i] = neighbors[i];
+        }
+        return validNeighbors;
+    }
+
+    public void discoverAndSetupNeighbors() {
+        Cell[] cells = grid.getAllCells();
+        for (int i = 0; i < cells.length; i++) {
+            Cell cell = cells[i];
+            Coords[] neighbors = discoverNeighbors(cell);
+            cell.setNeighbors(neighbors);
+
+            if (cell.getStatus() == CellStatus.S) {
+                start = cell.getCoords();
+            }
+        }
     }
 
     public void solve(){
-        grid.walk(start);
-        
+        grid.walk(grid.getCell(start));
+
     } 
 
     public boolean insertCell(Cell c){
@@ -61,7 +75,7 @@ public class Maze {
     }
 
     /**
-     * Provided by Dusel. Assumes grid cell has a getStatus() method.
+     * reads all cells in the maze and formats them back in the grid as a file.
      * @param filename - Output filename.
      */
     public void serialize(String filename) {

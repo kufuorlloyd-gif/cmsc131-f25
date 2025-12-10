@@ -1,41 +1,29 @@
 package projects.maze;
 
-public class Cell {
-    
-    /** `Cell` class additions
-
-Extra attributes
-
-- `neighbors` (Coords[]) - coordinates of neighbors
-    - needs accessor/mutator
-
-- `explored` (boolean) - traversal flag (defaults to false)
-    - needs accessor/mutator
-
-- `status` (CellStatus enum) - cell's role/state
-    - Enum values    
-        - `S` maze entrance
-        - `E` maze exit  
-        - `O` open cell
-        - `P` part of solution path
-    - Needs accessor/mutator
-
-A cell will be constructed with a coordinates and a status. Decide for yourself what are sensible default values (if any) for the other attributes.
+/**
+ * A cell is a "space" in the maze that could be either a Start,end, or open path.
  */
+public class Cell {
 
     private CellStatus cellStatus;
     private boolean explored;
 
     private final Coords coords;
-    private Cell[]neighbors;
+    private Coords[]neighbors;
 
     public Cell(Coords c, CellStatus s) {
+        if (c == null) {
+            throw new IllegalArgumentException("Coords (c) cannot be null");
+        }
+        if (s == null) {
+            throw new IllegalArgumentException("Status (s) cannot be null");
+        }
         coords = c;
         cellStatus = s;
-        neighbors = new Cell[4];
         explored = false;
+        neighbors = new Coords[0];
     }
-    public Cell[] getNeighbors(){
+    public Coords[] getNeighbors(){
         return neighbors;
     }
 
@@ -63,15 +51,9 @@ A cell will be constructed with a coordinates and a status. Decide for yourself 
 
 
     }
-    public boolean addNeighbor(Cell c){
-        for (int i = 0; i < neighbors.length; i++){
-            if(neighbors[i] == null){
-                neighbors[i] = c;
-                return true;
-            }
-        }
-        return false;
 
+    public void setNeighbors(Coords[] inNeighbors) {
+        neighbors = inNeighbors;
     }
 
 }
