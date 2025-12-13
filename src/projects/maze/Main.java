@@ -9,8 +9,19 @@ public class Main {
         return maze;
     }
 
+    static void phase2() {
+        Maze maze = MazeReader.load("data/hard_maze.txt");
+        maze.solve();
+        maze.serialize("data/hard_maze.out");
+
+        maze = MazeReader.load("data/hard_maze_nosol.txt");
+        maze.solve();
+        maze.serialize("data/hard_maze_nosol.out");
+    }
+
     public static void main(String[] args) {
         Maze maze = phase1();
+        phase2();
     }
 
 }
